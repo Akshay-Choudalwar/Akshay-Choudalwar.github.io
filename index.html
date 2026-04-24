@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Akshay Choudalwar – Salesforce Developer</title>
+<style>
+/* ── THEME VARIABLES ── */
+[data-theme="light"]{
+  --bg:#f0f4f8;--surface:#ffffff;--surface2:#f8fafc;
+  --border:#e2e8f0;--text:#1a202c;--muted:#64748b;
+  --accent:#0057a8;--accent2:#0ea5e9;--green:#16a34a;
+  --red:#dc2626;--yellow:#d97706;--card-shadow:0 2px 16px rgba(0,0,0,.08);
+  --hero-bg:linear-gradient(45deg,#fd1d1d,#c13584,#405de6); /* updated */  /*linear-gradient(135deg,#0057a8 0%,#0284c7 50%,#0ea5e9 100%);*/
+  --toggle-bg:#e2e8f0;--toggle-knob:#0057a8;
+}
+[data-theme="dark"]{
+  --bg:#0d1117;--surface:#161b22;--surface2:#1c2333;
+  --border:#30363d;--text:#e6edf3;--muted:#8b949e;
+  --accent:#58a6ff;--accent2:#0ea5e9;--green:#3fb950;
+  --red:#f85149;--yellow:#d29922;--card-shadow:0 2px 16px rgba(0,0,0,.4);
+  --hero-bg:linear-gradient(135deg,#0d1117 0%,#0a1628 50%,#0d2137 100%);
+  --toggle-bg:#30363d;--toggle-knob:#58a6ff;
+}
+
+/* ── RESET ── */
+*{margin:0;padding:0;box-sizing:border-box;transition:background .25s,color .25s,border-color .25s}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;font-size:15px}
+a{text-decoration:none;color:inherit}
+img{max-width:100%}
+
+/* ── TOGGLE ── */
+.theme-toggle{
+  position:fixed;top:16px;right:16px;z-index:999;
+  background:var(--toggle-bg);border:2px solid var(--border);
+  border-radius:30px;width:56px;height:28px;cursor:pointer;
+  display:flex;align-items:center;padding:3px;transition:all .3s;
+}
+.toggle-knob{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--toggle-knob);transition:transform .3s;display:flex;align-items:center;justify-content:center;font-size:.7rem;
+}
+[data-theme="dark"] .toggle-knob{transform:translateX(28px)}
+.toggle-icon{font-size:.75rem;margin-left:auto;margin-right:4px;opacity:.7}
+[data-theme="dark"] .toggle-icon{margin-left:4px;margin-right:auto}
+
+/* ── HERO ── */
+.hero{
+  background:var(--hero-bg);color:#fff;
+  padding:52px 24px 40px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero::after{
+  content:'';position:absolute;bottom:-1px;left:0;width:100%;height:50px;
+  background:var(--bg);clip-path:ellipse(55% 100% at 50% 100%);
+}
+.hero-photo-wrap{
+  width:240px;height:240px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.8);
+  overflow:hidden;margin:0 auto 14px;
+  box-shadow:0 5px 30px rgba(0,0,0,.25);
+}
+.hero-photo-wrap img{width:100%;height:100%;object-fit:cover;object-position:top}
+.hero-name{font-size:clamp(1.5rem,5vw,2.5rem);font-weight:700;text-transform:uppercase;margin-bottom:15px}
+.hero-title{font-size:1.1rem;opacity:.8;font-weight:500;margin-bottom:6px;letter-spacing:.3px}
+.hero-loc{font-size:.90rem;opacity:.8;margin-bottom:14px}
+.hero-rate{
+  display:inline-block;background:rgba(255,255,255,.2);
+  border:1.5px solid rgba(255,255,255,.4);
+  font-size:1rem;font-weight:800;padding:5px 18px;
+  border-radius:20px;margin-bottom:16px;backdrop-filter:blur(4px);
+}
+.hero-available{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(22,163,74,.25);border:1px solid rgba(22,163,74,.5);
+  color:#4ade80;font-size:.72rem;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding:4px 12px;border-radius:20px;
+  margin-bottom:20px;
+}
+.hero-available::before{content:'';width:12px;height:12px;border-radius:50%;background:#4ade80;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:5}90%{opacity:.3}}
+.social-row{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin-bottom:20px}
+.soc-btn{
+  width:36px;height:36px;border-radius:50%;display:flex;
+  align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:800;
+  transition:transform .2s,opacity .2s;cursor:pointer;
+}
+.soc-btn:hover{transform:translateY(-3px);opacity:.85}
+.s-li{background:#0077b5;color:#fff}
+.s-up{background:#14a800;color:#fff;font-size:.6rem}
+.s-gh{background:#24292e;color:#fff}
+.s-fb{background:#F26418;color:#fff}
+.s-tw{background:#000;color:#fff}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn-white{
+  background:#fff;color:#0057a8;padding:9px 22px;
+  border-radius:8px;font-weight:700;font-size:.90rem;transition:all .2s;
+}
+.btn-white:hover{background:#e0f2fe;transform:translateY(-1px)}
+.btn-ghost{
+  border:1.5px solid rgba(255,255,255,.6);color:#fff;
+  padding:9px 22px;border-radius:8px;font-weight:700;font-size:.90rem;transition:all .2s;
+}
+.btn-ghost:hover{background:rgba(255,255,255,.15)}
+
+/* ── PAGE WRAPPER ── */
+.page{max-width:100%;padding:40px 28px}
+
+/* ── SECTION ── */
+.section{margin-bottom:32px}
+.section-title{
+  font-size:.7rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent);
+  margin-bottom:18px;display:flex;align-items:center;gap:10px;
+}
+.section-title::after{content:'';flex:1;height:1.5px;background:var(--border)}
+
+/* ── CARD ── */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:22px;
+  box-shadow:var(--card-shadow);margin-bottom:20px;
+}
+
+/* ── STATS ROW ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.stat-box{
+  background:linear-gradient(135deg, #f5f2ea, #f1d7f7, #f5f1e7);border:1px solid var(--border);
+  border-radius:12px;padding:16px;text-align:center;
+  box-shadow:var(--card-shadow);
+}
+.stat-num{font-size:1.4rem;font-weight:800;color:var(--accent)}
+.stat-lbl{font-size:.90rem;color:var(--muted);margin-top:2px}
+
+/* ── ABOUT ── */
+.about-text{font-size:.92rem;color:var(--muted);line-height:1.75}
+.about-text strong{color:var(--text)}
+
+/* ── SKILLS ── */
+.skills-group{margin-bottom:14px}
+.skills-group-label{font-size:.75rem;font-weight:700;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em}
+.skills-wrap{display:flex;flex-wrap:wrap;gap:8px}
+.skill-tag{
+  background:var(--surface2);border:1.5px solid var(--border);
+  color:var(--text);font-size:.8rem;font-weight:600;
+  padding:5px 14px;border-radius:20px;
+}
+.skill-tag.blue{background:#eff6ff;border-color:#bfdbfe;color:#1d4ed8}
+[data-theme="dark"] .skill-tag.blue{background:rgba(88,166,255,.1);border-color:rgba(88,166,255,.3);color:var(--accent)}
+.skill-tag.green{background:#f0fdf4;border-color:#bbf7d0;color:#15803d}
+[data-theme="dark"] .skill-tag.green{background:rgba(63,185,80,.1);border-color:rgba(63,185,80,.3);color:var(--green)}
+
+/* ── EXPERIENCE ── */
+.exp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}
+.exp-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:20px;box-shadow:var(--card-shadow);
+  border-left:4px solid var(--accent);
+}
+.exp-header{display:flex;gap:14px;align-items:flex-start;margin-bottom:12px}
+
+.exp-logo{
+  width:60px;height:60px;border-radius:5px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;font-weight:900;color:#fff;line-height:1.2;text-align:center;
+}
+.logo-tcs{color:#fff}
+.logo-dl{background:linear-gradient(135deg,#86bc25,#4a7c00)}
+.exp-meta{}
+.exp-role{font-weight:800;font-size:.97rem;margin-bottom:1px}
+.exp-company{font-size:.85rem;color:var(--accent);font-weight:600}
+.exp-duration{font-size:.75rem;color:var(--muted);margin-top:3px}
+.exp-desc{font-size:.85rem;color:var(--muted);line-height:1.65;margin-bottom:10px}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px}
+.tag{
+  background:var(--surface2);border:1px solid var(--border);
+  color:var(--muted);font-size:.72rem;padding:3px 10px;border-radius:6px;font-weight:500;
+}
+
+/* ── CERTS ── */
+.certs-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.cert-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:16px;display:flex;gap:12px;
+  box-shadow:var(--card-shadow);align-items:flex-start;
+}
+.cert-icon{
+  width:50px;height:50px;border-radius:10px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+}
+.ci-blue{background:#eff6ff}
+[data-theme="dark"] .ci-blue{background:rgba(88,166,255,.15)}
+.cert-name{font-weight:700;font-size:.95rem;margin-bottom:2px}
+.cert-meta{font-size:.85rem;color:var(--muted)}
+.cert-badge{
+  display:inline-block;background:#f0fdf4;border:1px solid #bbf7d0;
+  color:#15803d;font-size:.75rem;font-weight:700;padding:1px 8px;border-radius:8px;margin-top:4px;
+}
+[data-theme="dark"] .cert-badge{background:rgba(63,185,80,.1);border-color:rgba(63,185,80,.3);color:var(--green)}
+
+/* ── PROJECTS ── */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.proj-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;box-shadow:var(--card-shadow);
+  transition:transform .2s,box-shadow .2s;
+}
+.proj-card:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(0,0,0,.14)}
+.proj-banner{
+  height:100px;display:flex;align-items:center;
+  justify-content:center;font-size:2.5rem;
+}
+.banner-blue{background:linear-gradient(135deg,#eff6ff,#bfdbfe)}
+.banner-gray{background:linear-gradient(135deg,#f8fafc,#e2e8f0)}
+.banner-green{background:linear-gradient(135deg,#f0fdf4,#bbf7d0)}
+.banner-red {background: linear-gradient(135deg, #fee2e2, #fca5a5, #ef4444);}
+
+[data-theme="dark"] .banner-blue{background:linear-gradient(135deg,#0a1628,#0d2137)}
+[data-theme="dark"] .banner-gray{background:linear-gradient(135deg,#161b22,#1c2333)}
+[data-theme="dark"] .banner-green{background:linear-gradient(135deg,#0d1a0d,#0f2e0f)}
+.proj-body{padding:16px}
+.proj-title{font-weight:700;font-size:.92rem;margin-bottom:5px}
+.proj-desc{font-size:.82rem;color:var(--muted);line-height:1.55;margin-bottom:10px}
+
+/* ── INFO GRID ── */
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.info-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:18px;box-shadow:var(--card-shadow);
+}
+.info-card h4{font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:.85rem}
+.info-row:last-child{border-bottom:none}
+.info-label{color:var(--muted)}
+.info-val{font-weight:600}
+.info-val.green{color:var(--green)}
+.lang-level{
+  background:var(--surface2);border:1px solid var(--border);
+  font-size:.72rem;padding:2px 10px;border-radius:10px;color:var(--muted);
+}
+.edu-item{display:flex;gap:12px;align-items:flex-start}
+.edu-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#fef3c7,#fde68a);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+.edu-degree{font-weight:700;font-size:.88rem}
+.edu-school{font-size:.8rem;color:var(--accent);margin-top:2px}
+.edu-year{font-size:.74rem;color:var(--muted);margin-top:2px}
+
+/* ── CTA ── */
+.cta-bar{
+  background:linear-gradient(135deg,#0057a8,#0284c7);
+  color:#fff;border-radius:16px;padding:32px 28px;
+  text-align:center;margin-bottom:20px;
+}
+.cta-bar h3{font-size:1.4rem;font-weight:800;margin-bottom:15px;color:#fff}
+.cta-bar p{opacity:.90;font-size:.95rem;margin-bottom:20px}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.cta-btn-w{background:#fff;color:#0057a8;padding:10px 24px;border-radius:8px;font-weight:700;font-size:.88rem;transition:opacity .2s}
+.cta-btn-w:hover{opacity:.9}
+.cta-btn-o{border:1.5px solid rgba(255,255,255,.6);color:#fff;padding:10px 24px;border-radius:8px;font-weight:600;font-size:.88rem;transition:all .2s}
+.cta-btn-o:hover{background:rgba(255,255,255,.15)}
+
+/* ── FOOTER ── */
+footer{text-align:center;padding:15px;font-size:.9rem;color:var(--muted);border-top:2px solid var(--border)}
+
+/* ── PRINT / PDF ── */
+@media print{
+  .theme-toggle,.hero-btns,.cta-bar,.proj-card:hover{display:none!important}
+  body{background:#fff!important;color:#000!important;font-size:12px}
+  .hero{background:linear-gradient(135deg,#0057a8,#0ea5e9)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:32px 16px 28px}
+  .hero::after{display:none}
+  .card,.exp-card,.cert-card,.proj-card,.stat-box,.info-card{
+    box-shadow:none!important;border:1px solid #e2e8f0!important;break-inside:avoid;
+  }
+  .page{padding:20px 16px}
+  .stats-row{grid-template-columns:repeat(4,1fr)}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:600px){
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .page{padding:24px 14px}
+}
+</style>
+</head>
+<body>
+
+<!-- DARK/LIGHT TOGGLE -->
+<div class="theme-toggle" onclick="toggleTheme()" title="Toggle theme">
+  <div class="toggle-knob" id="knob">☀️</div>
+</div>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-photo-wrap">
+    <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgCvdL-kdJARLjTFVFZ7c50hzcW6kuBCM9VIHkrDmbf7Z_Z7EIkoraSX5r1huUos-RwYBClDssLOdLf4YcivwfLHE3SRBh2TurCpKKha438LksXi5louDUHZVM_FfL8D89sPvduK_w50QcUK0UznMPz4a70L9w31gpQzMINXqXhRbck4ubSd2Jr6eP7AIY/s2811/NIKON%20D810274-01-01.jpeg" 
+alt="Akshay Choudalwar"/>
+   
+  </div>
+  <div class="hero-name">Akshay Choudalwar</div>
+  <div class="hero-title">Salesforce Admin | Developer</div>
+  <div class="hero-loc">📍 Pune, India</div>
+  <!--<div class="hero-rate">$15.00 / hr</div><br/>-->
+  <div class="hero-available"> Available for Work — Open to Offers</div>
+
+  <div class="social-row">
+    <a class="soc-btn s-li" href="https://linkedin.com/in/akshaychoudalwar" title="LinkedIn">in</a>
+    <a class="soc-btn s-up" href="https://www.upwork.com/freelancers/~01fce3dc636667d489" title="Upwork">UP</a>
+    <!--<a class="soc-btn s-gh" href="https://github.com" title="GitHub">⌥</a>-->
+    <a class="soc-btn s-fb" href="https://Instagram.com/akshayy.77" title="Insta">Ig</a>
+    <a class="soc-btn s-tw" href="https://twitter.com/Akchoudalwar" title="𝕏">𝕏</a>
+  </div>
+
+  <div class="hero-btns">
+    <a class="btn-white" href="mailto:akchoudalwar@gmail.com">📩 Hire Me</a>
+    <!--<a class="btn-ghost" href="https://hustlefly.blogspot.com" target="_blank">🌐 My Blog</a>-->
+    <a class="btn-ghost" href="tel:+917972726964">📞 Contact </a>
+    <a class="btn-ghost" href="javascript:window.print()">⬇ Save as PDF</a>
+  </div>
+</section>
+
+<!-- ══ PAGE ══ -->
+<div class="page">
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num" style="color:#0057a8">7X</div><div class="stat-lbl">Salesforce CRM Certified</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:#c408ab">5</div><div class="stat-lbl">Years Experience</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:#16a34a">5+</div><div class="stat-lbl">Projects Delivered</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:#d97706">90%</div><div class="stat-lbl">Client Satisfaction</div></div>
+  </div>
+
+  <!-- ABOUT -->
+  <div class="section">
+    <div class="section-title">👤 About Me</div>
+    <div class="card">
+      <p class="about-text">
+        Hey! I'm a <strong>Salesforce Certified Professional</strong> with <strong>4+ years of hands-on experience</strong> in IT industry,
+        Specializing  in Salesforce CRM, working with global clients to build scalable solutions.
+        I'e worked with client from different domains like Manufacturing, Environmental, Healthcare.
+        and delivered complex Salesforce projects while working in fulltime with <strong>MNC's</strong> for
+        giants like <strong>JLR (Jaguar Land Rover)</strong> and <strong>Siemens AG</strong>.<br/><br/>
+        <strong>Need help Customizing / Automating your Salesforce CRM system? I can help — </strong><br/>
+        Moving your business into structured automations, App customzations, 
+        From Administration setup + Configuration to end-to-end Service/ Sales Cloud implementation, covering from lead capture to managing customer cases.<br/>
+        I bring both technical depth and business understanding to every project I take on, ensuring solutions aligned with your business goals.
+      </p>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section">
+    <div class="section-title">🛠 Skills</div>
+    <div class="card">
+      <div class="skills-group">
+        <div class="skills-group-label">Core Salesforce</div>
+        <div class="skills-wrap">
+          <span class="skill-tag blue">Salesforce CRM</span>
+          <span class="skill-tag blue">Apex Development</span>
+          <span class="skill-tag blue">Lightning Web Components (LWC)</span>
+          <span class="skill-tag blue">Salesforce App Development</span>
+          <span class="skill-tag blue">Salesforce Lightning</span>
+          <span class="skill-tag blue">Service Cloud</span>
+          <span class="skill-tag blue">Sales Cloud</span>
+          <span class="skill-tag blue">Flow &amp; Process Automation</span>
+          <span class="skill-tag blue">Data Validations</span>
+          <span class="skill-tag blue">Admin Setup &amp; Configuration</span>
+          <span class="skill-tag blue">Integrations</span>
+          <span class="skill-tag blue">Experience / Community Cloud</span>
+        </div>
+      </div>
+      <div class="skills-group">
+        <div class="skills-group-label">Supporting &amp; Technical</div>
+        <div class="skills-wrap">
+          <span class="skill-tag green">QA Testing</span>
+          <span class="skill-tag green">DevOps</span>
+          <span class="skill-tag green">Administrative Support</span>
+          <span class="skill-tag green">Technical Support</span>
+          <span class="skill-tag green">Bug Fixing</span>
+          <span class="skill-tag green">Performance Optimization</span>
+          <span class="skill-tag green">HTML / CSS</span>
+          <span class="skill-tag green">Git</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="section">
+    <div class="section-title">💼 Employment History</div>
+    <div class="exp-grid">
+
+      <div class="exp-card">
+        <div class="exp-header">
+          <div class="exp-logo logo-tcs"><img src="https://i.logos-download.com/113971/29583-s1280-f1edd59965558dfef713431e8730144a.avif/Tata_Consultancy_Services_Logo_2020-s1280.avif" alt="TCS Logo"> </div>
+          <div class="exp-meta">
+            <div class="exp-role">Salesforce Developer</div>
+            <div class="exp-company">Tata Consultancy Services</div>
+            <div class="exp-duration">📅 April 2023 – February 2026</div>
+          </div>
+        </div>
+        <p class="exp-desc">
+          Handled Salesforce development and administration for global manufacturing clients including
+          <strong>JLR</strong> and <strong>Siemens</strong>. Delivered Apex solutions, LWC components,
+          Flow automations, Service Cloud , and integrations tailored to enterprise requirements.
+        </p>
+        <div class="tag-row">
+          <span class="tag">Apex</span><span class="tag">LWC</span>
+          <span class="tag">Service Cloud</span><span class="tag">Flow</span>
+          <span class="tag">Integrations</span><span class="tag">JLR</span><span class="tag">Siemens</span>
+        </div>
+      </div>
+
+      <div class="exp-card" style="border-left-color:#86bc25">
+        <div class="exp-header">
+          <div class="exp-logo logo-dl"><img src="https://www.pngmart.com/files/23/Deloitte-Logo-PNG-Photo.png" alt="TCS Logo"></div>
+          <div class="exp-meta">
+            <div class="exp-role">Salesforce Analyst</div>
+            <div class="exp-company">Deloitte</div>
+            <div class="exp-duration">📅 Prior Experience</div>
+          </div>
+        </div>
+        <p class="exp-desc">
+          Worked as a Salesforce consultant delivering CRM customisation, administrative configurations,
+          and cross-functional solutions for enterprise clients across multiple industries.
+        </p>
+        <div class="tag-row">
+          <span class="tag">Salesforce CRM</span><span class="tag">Admin</span>
+          <span class="tag">Technical Support</span><span class="tag">Consulting</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CERTIFICATIONS -->
+  <div class="section">
+    <div class="section-title">🏅 Certifications </div>
+    <div class="certs-grid">
+      <div class="cert-card">
+        <div class="cert-icon ci-blue"><img src="https://1000logos.net/wp-content/uploads/2017/08/Salesforce-Logo.png"> </div>
+        <div>
+          <div class="cert-name">Service Cloud Consultant</div>
+          <div class="cert-meta">Salesforce · April 2025</div>
+          <span class="cert-badge">✓ Verified</span>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon ci-blue"><img src="https://1000logos.net/wp-content/uploads/2017/08/Salesforce-Logo.png"></div>
+        <div>
+          <div class="cert-name">Platform Developer I</div>
+          <div class="cert-meta">Salesforce</div>
+          <span class="cert-badge">✓ Verified</span>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon ci-blue"><img src="https://1000logos.net/wp-content/uploads/2017/08/Salesforce-Logo.png"></div>
+        <div>
+          <div class="cert-name">Salesforce Administrator</div>
+          <div class="cert-meta">Salesforce</div>
+          <span class="cert-badge">✓ Verified</span>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon ci-blue"><img src="https://1000logos.net/wp-content/uploads/2017/08/Salesforce-Logo.png"></div>
+        <div>
+          <div class="cert-name">Platform App Builder</div>
+          <div class="cert-meta">Salesforce</div>
+          <span class="cert-badge">✓ Verified</span>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon ci-blue"><img src="https://1000logos.net/wp-content/uploads/2017/08/Salesforce-Logo.png"></div>
+        <div>
+          <div class="cert-name">Sales Cloud Consultant</div>
+          <div class="cert-meta">Salesforce</div>
+          <span class="cert-badge">✓ Verified</span>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon ci-blue"><img src="https://1000logos.net/wp-content/uploads/2017/08/Salesforce-Logo.png"></div>
+        <div>
+          <div class="cert-name">Advanced Administrator</div>
+          <div class="cert-meta">Salesforce</div>
+          <span class="cert-badge">✓ Verified</span>
+        </div>
+      </div>
+     <!-- <div class="cert-card">
+        <div class="cert-icon ci-blue"><img src="https://1000logos.net/wp-content/uploads/2017/08/Salesforce-Logo.png"></div>
+        <div>
+          <div class="cert-name">Experience Cloud Consultant</div>
+          <div class="cert-meta">Salesforce</div>
+          <span class="cert-badge">In-Progress</span>
+        </div>
+      </div>-->
+       <div class="cert-card">
+        <div class="cert-icon ci-blue"><img src="https://appexchange.salesforce.com/partners/servlet/servlet.FileDownload?file=00P3A00000jVgvyUAC"></div>
+        <div>
+          <div class="cert-name">Copado Administrator</div>
+          <div class="cert-meta">Copado</div>
+          <span class="cert-badge">✓ Verified</span>
+        </div>
+      </div>
+      <div class="cert-card">
+        <div class="cert-icon ci-blue"><img src="https://media.wired.com/photos/5926ffe47034dc5f91bed4e8/3:2/w_1920,c_limit/google-logo.jpg"></div>
+        <div>
+          <div class="cert-name">Google Digital Marketing Fundamentals</div>
+          <div class="cert-meta">Google</div>
+          <span class="cert-badge">✓ Verified</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section">
+    <div class="section-title">🚀 Key Projects (Work + Personal)</div>
+    <div class="projects-grid">
+      <div class="proj-card">
+        <div class="proj-banner banner-blue">🚗</div>
+        <div class="proj-body">
+          <div class="proj-title">JLR – Jguar Land Rover</div>
+          <div class="proj-desc">End-to-end Service Cloud implementation for Jaguar Land Rover retailer users from 50+ countires including case management, automations, and digital customer portal for global support operations.</div>
+          <div class="tag-row"><span class="tag">Service Cloud</span><span class="tag">Apex</span><span class="tag">LWC</span><span class="tag">Automation</span></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-banner banner-gray">⚙️</div>
+        <div class="proj-body">
+          <div class="proj-title">Siemens AG – CRM Automation</div>
+          <div class="proj-desc">Designed and deployed Flow-based process automations and Apex triggers to streamline Siemens' Salesforce CRM workflows, data validation, and reporting pipelines.</div>
+          <div class="tag-row"><span class="tag">Flow</span><span class="tag">Apex Triggers</span><span class="tag">DevOps</span><span class="tag">Data</span></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-banner banner-green">🌐</div>
+        <div class="proj-body">
+          <div class="proj-title">Hustlefly.com – Blog Platform &nbsp; <a class="skill-tag blue" href="https://Hustlefly.in"> Visit →</a></div>
+          <div class="proj-desc">Built and maintain a multi-category blog website covering Tech, Business &amp; Travel with 5K+ monthly readers, custom third party tool integration, content strategy.</div>
+          <div class="tag-row"><span class="tag">Blogger XML</span><span class="tag">HTML/ CSS</span><span class="tag">SEO</span><span class="tag">Template Customisation</span></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-banner banner-blue">💼</div>
+        <div class="proj-body">
+          <div class="proj-title">Project Management App</div>
+          <div class="proj-desc">● Developed a centralized project management app on salesforce CRM that streamlines the entire lifecycle — from client onboarding and role assignment to requirements, employees, and projects.<br>● It enables features of data storage, visualization, validation, and automation to enhance efficiency and relationship management</div>
+          <div class="tag-row"><span class="tag">Admin Config</span><span class="tag">Apex Triggers</span><span class="tag">Report/ Dashboard</span>
+                     <span class="tag">Email Automation</span></div>
+        </div>
+      </div>
+      <div class="proj-card">
+        <div class="proj-banner banner-green">💊</div>
+        <div class="proj-body">
+          <div class="proj-title">BMI Calculator &nbsp; <a class="skill-tag blue" href="https://akshay-choudalwar-dev-ed.my.site.com/s/projects/bmi-calculator"> Visit →</a></div>
+          <div class="proj-desc">● Developed a BMI Calculator that computes your Body Mass Index based on inputs.<br>● Provides results with a structured table view, making health metrics easy to view and track.</div>
+          <div class="tag-row"><span class="tag">LWC</span><span class="tag">Apex</span><span class="tag">HTML/ CSS</span>
+                     <span class="tag">JS</span></div>
+        </div>
+      </div>
+       <div class="proj-card">
+        <div class="proj-banner banner-red">📚</div>
+        <div class="proj-body">
+          <div class="proj-title">Book Finder App &nbsp; <a class="skill-tag blue" href="https://akshay-choudalwar-dev-ed.my.site.com/s/projects/books-search-app"> Visit →</a></div>
+          <div class="proj-desc">● A Books search app built on top of Salesforce that lets users quickly search and explore books by names, displaying list of books in a modern UI.<br>●  It comes with search functionality, responsive book card UI, paginated results, detailed modal popups with Authors, Rating, Date etc and error handling for a seamless UI.</div>
+          <div class="tag-row"><span class="tag">LWC</span><span class="tag">GoogleBooks API</span><span class="tag">HTML/ CSS</span>
+                     <span class="tag">JS</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDUCATION + LANGUAGES + QUICK INFO -->
+  <div class="section">
+    <div class="section-title">📋 Education, Languages &amp; Info</div>
+    <div class="info-grid">
+
+      <div class="info-card">
+        <h4>🎓 Education</h4>
+        <div class="edu-item">
+          <div class="edu-icon">🏛️</div>
+          <div>
+            <div class="edu-degree">Bachelor of Engineering (BE)</div>
+            <div class="edu-school">RTMNU – Nagpur University</div>
+            <div class="edu-year"><strong>Concentration:</strong> Mechanical Engineering<br><strong>Year:</strong> 2015 – 2019</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h4>🌐 Languages</h4>
+        <div class="info-row"><span class="info-label">English</span><span class="lang-level">Fluent</span></div>
+        <div class="info-row"><span class="info-label">Hindi</span><span class="lang-level">Native / Bilingual</span></div>
+        <div class="info-row"><span class="info-label">Marathi</span><span class="lang-level">Native</span></div>
+      </div>
+
+      <div class="info-card">
+        <h4>📊 Quick Info</h4>
+        <div class="info-row"><span class="info-label">Rate</span><span class="info-val">$10-15 / hr</span></div>
+        <div class="info-row"><span class="info-label">Availability</span><span class="info-val green">Open to Offers</span></div>
+        <div class="info-row"><span class="info-label">Contract to Hire</span><span class="info-val green">✓ Yes</span></div>
+        <div class="info-row"><span class="info-label">Location</span><span class="info-val">Pune, India</span></div>
+        <div class="info-row"><span class="info-label">ID Verified</span><span class="info-val green">✓ Phone + Email</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-bar">
+    <h3 style="color:#fff;">🤝 Let's Build Something Great Together</h3>
+    <p>Open to freelance projects, short-term contracts, consulting and contract-to-hire opportunities.<Br>Any Question - Message - Feedback? Please feel free to contact.
+</p>
+    <div class="cta-btns">
+      <a class="cta-btn-w" href="mailto:akchoudalwar@gmail.com">📩 Email </a>
+      <a class="cta-btn-o" href="tel:+917972726964">📞 Contact</a>
+     <!-- <a class="cta-btn-o" href="https://hustlefly.blogspot.com" target="_blank">🌐 My Blog</a>-->
+    </div>
+  </div>
+
+</div><!-- end page -->
+
+<footer>
+  © 2026 - By Akshay Choudalwar &nbsp;
+ <!--  <a href="https://hustlefly.In" style="color:var(--accent)">HustleFly.In</a> &nbsp;-->
+</footer>
+
+<script>
+function toggleTheme(){
+  var h=document.documentElement;
+  var t=h.getAttribute('data-theme')==='light'?'dark':'light';
+  h.setAttribute('data-theme',t);
+  document.getElementById('knob').textContent=t==='dark'?'🌙':'☀️';
+}
+</script>
+</body>
+</html>
